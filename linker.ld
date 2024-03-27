@@ -1,9 +1,6 @@
-/* The bootloader will look at this image and start execution at the symbol
-   designated as the entry point. */
 ENTRY(_start)
- 
-/* Tell where the various sections of the object files will be put in the final
-   kernel image. */
+OUTPUT_FORMAT(elf32-i386)
+
 SECTIONS
 {
 	/* Begin putting sections at 1 MiB, a conventional place for kernels to be
@@ -29,6 +26,23 @@ SECTIONS
 	.data BLOCK(4K) : ALIGN(4K)
 	{
 		*(.data)
+	}
+
+	.init_array :
+	{
+		bin/crti.o(.init_array)
+		KEEP (*(SORT(EXCLUDE_FILE(bin/crti.o bin/crtn.o) .init_array.*)))
+		KEEP (*(EXCLUDE_FILE(bin/crti.o bin/crtn.o) .init_array))
+		bin/crtn.o(.init_array)
+	}
+
+	/* Include the list of termination functions sorted. */
+	.fini_array :
+	{
+		bin/crti.o(.fini_array)
+		KEEP (*(SORT(EXCLUDE_FILE(bin/crti.o bin/crtn.o) .fini_array.*)))
+		KEEP (*(EXCLUDE_FILE(bin/crti.o bin/crtn.o) .fini_array))
+		bin/crtn.o(.fini_array)
 	}
  
 	/* Read-write data (uninitialized) and stack */

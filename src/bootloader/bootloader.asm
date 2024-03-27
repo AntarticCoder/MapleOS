@@ -42,6 +42,7 @@ bootloader will jump to this position once the kernel has been loaded. It
 doesn't make sense to return from this function as the bootloader is gone.
 */
 .section .text
+
 .global _start
 .type _start, @function
 _start:
@@ -75,6 +76,7 @@ _start:
 	C++ features such as global constructors and exceptions will require
 	runtime support to work as well.
 	*/
+	call _init
 
 	/*
 	Enter the high-level kernel. The ABI requires the stack is 16-byte
