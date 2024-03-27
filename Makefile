@@ -29,12 +29,21 @@ bin/bootloader.o: src/bootloader/bootloader.asm
 bin/global_constructors.o: src/kernel/arch/i686/global_constructors.cpp
 	@$(CC) ${CFLAGS} -c src/kernel/arch/i686/global_constructors.cpp -o bin/global_constructors.o
 
+bin/vga.o: src/kernel/arch/i686/vga.cpp
+	@$(CC) ${CFLAGS} -c src/kernel/arch/i686/vga.cpp -o bin/vga.o
+
+bin/string.o: src/kernel/string.cpp
+	@$(CC) ${CFLAGS} -c src/kernel/string.cpp -o bin/string.o
+
+bin/terminal.o: src/kernel/terminal.cpp
+	@$(CC) ${CFLAGS} -c src/kernel/terminal.cpp -o bin/terminal.o
+
 bin/kernel.o: src/kernel/kernel.cpp
 	@$(CC) ${CFLAGS} -c src/kernel/kernel.cpp -o bin/kernel.o
 
-build: bin/kernel.o bin/global_constructors.o bin/bootloader.o ${CRTI_OBJ} ${CRTN_OBJ}
+build: bin/kernel.o bin/terminal.o bin/string.o bin/vga.o bin/global_constructors.o bin/bootloader.o ${CRTI_OBJ} ${CRTN_OBJ}
 	@echo "${COLOUR_GREEN}Compiling MapleOS${END_COLOUR}"
-	@$(LD) $(LDFLAGS) bin/bootloader.o bin/kernel.o bin/global_constructors.o $(CRTI_OBJ) $(CRTBEGIN_OBJ) $(CRTEND_OBJ) $(CRTN_OBJ) -o bin/kernel.bin
+	@$(LD) $(LDFLAGS) bin/bootloader.o bin/kernel.o bin/terminal.o bin/string.o bin/vga.o bin/global_constructors.o $(CRTI_OBJ) $(CRTBEGIN_OBJ) $(CRTEND_OBJ) $(CRTN_OBJ) -o bin/kernel.bin
 
 run:
 	@echo "${COLOUR_GREEN}Running MapleOS in QEMU${END_COLOUR}"

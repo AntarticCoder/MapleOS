@@ -1,5 +1,4 @@
-#ifndef GLOBAL_CONSTRUCTORS_H
-#define GLOBAL_CONSTRUCTORS_H
+#pragma once
 
 #ifdef __cplusplus
 extern "C" {
@@ -15,5 +14,4 @@ void CallGlobalDestructors(void);
 
 #ifdef __cplusplus
 }
-#endif
 #endif

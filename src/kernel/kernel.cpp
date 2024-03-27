@@ -3,28 +3,19 @@
 #include <stdint.h>
 
 #include <kernel/arch/i686/global_constructors.h>
-
-volatile char *video = (volatile char*)0xB8000;
-
-size_t strlen(const char *string)
-{
-    size_t length = 0;
-    while(string[length]) { length++; }
-    return length;
-}
-
-void kprint(const char *string, size_t len)
-{
-    for(size_t i = 0; i < len; i++)
-    {
-        *video++ = string[i];
-        *video++ = 15;
-    }
-}
+#include <kernel/terminal.h>
 
 extern "C" void kernel_main(void) 
 {
     CallGlobalConstructors();
-	kprint("Hello MapleOS", strlen("Hello MapleOS"));
+
+    Terminal terminal;
+    terminal.Printf("Hello, kernel!\n", VGA_COLOR::GREEN);
+    terminal.Printf("Testing Printf d: %d\n", VGA_COLOR::GREEN, 128);
+    terminal.Printf("Testing Printf i: %i\n", VGA_COLOR::GREEN, 256);
+    terminal.Printf("Testing Printf u: %u\n", VGA_COLOR::GREEN, 512);
+    terminal.Printf("Testing Printf c: %c\n", VGA_COLOR::GREEN, 'A');
+    terminal.Printf("Testing Printf s: %s\n", VGA_COLOR::GREEN, "Printf String");
+
     CallGlobalDestructors();
 }
