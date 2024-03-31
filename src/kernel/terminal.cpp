@@ -9,7 +9,7 @@ Terminal::Terminal()
     ClearScreen();
 }
 
-void Terminal::Printf(char* str, VGA_COLOR color, ...)
+void Terminal::Printf(const char* str, VGA_COLOR color, ...)
 {
     va_list args;
     va_start(args, color);

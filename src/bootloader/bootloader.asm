@@ -20,6 +20,7 @@ stack_top:
 .section .text
 
 .global _start
+.global kernel_main
 .type _start, @function
 
 /*

@@ -1,4 +1,4 @@
-#include <kernel/arch/i686/vga.h>
+#include <kernel/arch/x86_64/vga.h>
 
 volatile char* VGA_MEMORY = (volatile char*)0xB8000;
 

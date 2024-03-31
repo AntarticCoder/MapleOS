@@ -1,7 +1,7 @@
 #pragma once
 #include <stdarg.h>
 
-#include <kernel/arch/i686/vga.h>
+#include <kernel/arch/x86_64/vga.h>
 #include <kernel/string.h>
 
 class Terminal
@@ -14,5 +14,5 @@ private:
 public:
     Terminal();
 
-    void Printf(char* str, VGA_COLOR color, ...);
+    void Printf(const char* str, VGA_COLOR color, ...);
 };
