@@ -14,5 +14,6 @@ private:
 public:
     Terminal();
 
+    void Init();
     void Printf(const char* str, VGA_COLOR color, ...);
 };

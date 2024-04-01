@@ -5,6 +5,13 @@ Terminal::Terminal()
     _buffer = (char*)0xB8000;
     _cursorX = 0;
     _cursorY = 0;
+}
+
+void Terminal::Init()
+{
+    _buffer = (char*)0xB8000;
+    _cursorX = 0;
+    _cursorY = 0;
 
     ClearScreen();
 }
