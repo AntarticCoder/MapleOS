@@ -4,7 +4,10 @@
 
 #include <kernel/arch/x86_64/global_constructors.h>
 #include <kernel/arch/x86_64/serial.h>
+#include <kernel/arch/x86_64/io_ports.h>
 #include <kernel/terminal.h>
+
+#include <drivers/audio/pc_speaker_driver.h>
 
 extern "C" void kernel_main(void) 
 {
@@ -22,6 +25,12 @@ extern "C" void kernel_main(void)
     Serial serial;
     serial.Init();
     serial.WriteSerial("Hello\n");
+
+    PCSpeakerDriver::PlaySound(10);
+    while(true)
+    {
+       // Hang
+    }
 
     CallGlobalDestructors();
 }

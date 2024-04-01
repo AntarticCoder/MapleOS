@@ -45,7 +45,7 @@ ${TARGET}: ${CPP_OBJECTS} bin/bootloader.o ${CRTI_OBJ} ${CRTN_OBJ}
 
 run:
 	@echo "${COLOUR_GREEN}Running MapleOS in QEMU${END_COLOUR}"
-	@qemu-system-x86_64 -serial stdio -append 'console=ttyS0,38400' -kernel ${TARGET}
+	@qemu-system-x86_64 -audiodev coreaudio,id=snd0 -machine pcspk-audiodev=snd0 -serial stdio -append 'console=ttyS0,38400' -kernel ${TARGET}
 
 clean:
 	@echo "${COLOUR_BLUE}Cleaning MapleOS${END_COLOUR}"
