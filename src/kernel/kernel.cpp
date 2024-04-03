@@ -9,6 +9,8 @@
 
 #include <drivers/audio/pc_speaker_driver.h>
 
+extern uint32_t endkernel;
+
 extern "C" void kernel_main(void) 
 {
     CallGlobalConstructors();
@@ -26,7 +28,7 @@ extern "C" void kernel_main(void)
     serial.Init();
     serial.WriteSerial("Hello\n");
 
-    PCSpeakerDriver::PlaySound(10);
+    // PCSpeakerDriver::PlaySound(10);
     while(true)
     {
        // Hang

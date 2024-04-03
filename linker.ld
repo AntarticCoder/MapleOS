@@ -14,6 +14,7 @@ SECTIONS
 	{
 		*(.multiboot)
 		*(.text)
+		end_kernel = .;
 	}
  
 	/* Read-only data. */
@@ -30,19 +31,19 @@ SECTIONS
 
 	.init_array :
 	{
-		bin/crti.o(.init_array)
-		KEEP (*(SORT(EXCLUDE_FILE(bin/crti.o bin/crtn.o) .init_array.*)))
-		KEEP (*(EXCLUDE_FILE(bin/crti.o bin/crtn.o) .init_array))
-		bin/crtn.o(.init_array)
+		bin/kernel/arch/x86_64/crti.o(.init_array)
+		KEEP (*(SORT(EXCLUDE_FILE(bin/kernel/arch/x86_64/crti.o bin/kernel/arch/x86_64/crtn.o) .init_array.*)))
+		KEEP (*(EXCLUDE_FILE(bin/kernel/arch/x86_64/crti.o bin/kernel/arch/x86_64/crtn.o) .init_array))
+		bin/kernel/arch/x86_64/crtn.o(.init_array)
 	}
 
 	/* Include the list of termination functions sorted. */
 	.fini_array :
 	{
-		bin/crti.o(.fini_array)
-		KEEP (*(SORT(EXCLUDE_FILE(bin/crti.o bin/crtn.o) .fini_array.*)))
-		KEEP (*(EXCLUDE_FILE(bin/crti.o bin/crtn.o) .fini_array))
-		bin/crtn.o(.fini_array)
+		bin/kernel/arch/x86_64/crti.o(.fini_array)
+		KEEP (*(SORT(EXCLUDE_FILE(bin/kernel/arch/x86_64/crti.o bin/kernel/arch/x86_64/crtn.o) .fini_array.*)))
+		KEEP (*(EXCLUDE_FILE(bin/kernel/arch/x86_64/crti.o bin/kernel/arch/x86_64/crtn.o) .fini_array))
+		bin/kernel/arch/x86_64/crtn.o(.fini_array)
 	}
  
 	/* Read-write data (uninitialized) and stack */
