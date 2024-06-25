@@ -5,6 +5,7 @@
 #include <kernel/arch/x86_64/global_constructors.h>
 #include <kernel/arch/x86_64/serial.h>
 #include <kernel/arch/x86_64/io_ports.h>
+#include <kernel/arch/x86_64/gdt.h>
 #include <kernel/terminal.h>
 
 #include <drivers/audio/pc_speaker_driver.h>
@@ -23,6 +24,12 @@ extern "C" void kernel_main(void)
     terminal.Printf("Testing Printf u: %u\n", VGA_COLOR::GREEN, 512);
     terminal.Printf("Testing Printf c: %c\n", VGA_COLOR::GREEN, 'A');
     terminal.Printf("Testing Printf s: %s\n", VGA_COLOR::RED, "Printf String");
+
+    terminal.Printf("Sizeof GDT Entry: %d\n", VGA_COLOR::GREEN, sizeof(GDTEntry));
+    terminal.Printf("Sizeof GDT Pointer: %d\n", VGA_COLOR::GREEN, sizeof(GDTPointer));
+
+    LoadGDT();
+    terminal.Printf("GDT Loaded\n", VGA_COLOR::GREEN);
 
     Serial serial;
     serial.Init();
