@@ -2,9 +2,11 @@
 
 class Serial
 {
-public:
+private:
     int Init();
+public:
+    Serial();
 
-    void WriteSerialCharcter(const char c);
-    void WriteSerial(const char* str);
+    static void WriteSerialCharcter(const char c);
+    static void WriteSerial(const char* str);
 };

@@ -2,14 +2,40 @@
 .set ALIGN,    1<<0             /* align loaded modules on page boundaries */
 .set MEMINFO,  1<<1             /* provide memory map */
 .set FLAGS,    ALIGN | MEMINFO  /* this is the Multiboot 'flag' field */
-.set MAGIC,    0x1BADB002       /* 'magic number' lets bootloader find the header */
+.set MAGIC, 0x36d76289
 .set CHECKSUM, -(MAGIC + FLAGS) /* checksum of above, to prove we are multiboot */
 
-.section .multiboot
+/* .section .multiboot
 .align 4
 .long MAGIC
 .long FLAGS
 .long CHECKSUM
+.long 0, 0, 0, 0, 0
+.long 0 # 0 = set graphics mode
+.long 1024, 768, 32 # Width, height, depth
+*/
+
+.set MBOOT2_MAGIC, 0xE85250D6
+.set MBOOT2_ARCH, 0
+.set MBOOT2_LENGTH, (Multiboot2HeaderEnd - Multiboot2Header)
+.set MBOOT2_CHECKSUM, -(MBOOT2_MAGIC + MBOOT2_ARCH + MBOOT2_LENGTH)
+
+.section .multiboot
+
+.align 0x8
+Multiboot2Header:
+.long MBOOT2_MAGIC
+.long MBOOT2_ARCH
+.long MBOOT2_LENGTH
+.long MBOOT2_CHECKSUM
+.long 0, 0, 0, 0, 0
+.long 0 # 0 = set graphics mode
+.long 1024, 768, 32 # Width, height, depth
+
+/* .short 0
+.short 0
+.long 8*/
+Multiboot2HeaderEnd:
 
 .section .bss
 .align 16
@@ -23,43 +49,11 @@ stack_top:
 .global kernel_main
 .type _start, @function
 
-/*
-; gdt_start:
-; 	null_descriptor:
-; 		dd 0
-; 		dd 0
-; 	code_descriptor:
-; 		dw 0xffff
-; 		dw 0
-; 		db 0
-; 		db 10011010
-; 		db 11001111
-; 		db 0
-; 	data_descriptor:
-; 		dw 0xffff
-; 		dw 0
-; 		db 0
-; 		db 10010010
-; 		db 11001111
-; 		db 0
-; 	gdt_end:
-
-; gdt_descriptor:
-; 	dw gdt_end - gdt_start - 1 ; size
-; 	dd gdt_start ; start
-
-; 	CODE_SEG equ code_descriptor - gdt_start
-; 	DATA_SEG equ data_descriptor - gdt_start
-*/
 _start:
 	mov $stack_top, %esp
 
-	/*
-	; cli 
-	; lgdt [gdt_descriptor]
-	*/
-	
-
+	pushl %ebx
+	pushl %eax
 	call _init
 	call kernel_main
 

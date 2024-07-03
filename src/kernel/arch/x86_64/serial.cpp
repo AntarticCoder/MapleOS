@@ -27,6 +27,11 @@ int Serial::Init()
     return 0;
 }
 
+Serial::Serial()
+{
+    Init();
+}
+
 void Serial::WriteSerialCharcter(char c) 
 {
     while(inportb(PORT + 5) & 0x20 == 0);

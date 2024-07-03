@@ -1,5 +1,5 @@
 CC=i686-elf-g++
-CFLAGS=-ffreestanding -m32 -g -O0 -fno-use-cxa-atexit -I src -fstack-protector-all
+CFLAGS=-ffreestanding -m32 -g -O0 -fno-use-cxa-atexit -I src
 
 LD=i686-elf-ld
 LDFLAGS=-T linker.ld -m elf_i386 -g -O0
@@ -44,12 +44,12 @@ iso:
 	@mkdir -p isodir/boot/grub
 	@cp grub.cfg isodir/boot/grub/
 	@cp bin/mapleos.bin isodir/boot/
-	@grub-mkrescue -o mapleos.iso isodir/
+	@grub-mkrescue -o mapleos.img isodir/
 
 debug: ${TARGET}
 	@mkdir -p bin
 	@echo "${COLOUR_GREEN}Debugging MapleOS in QEMU, waiting for debugger at port 1234${END_COLOUR}"
-	@qemu-system-x86_64 -s -S -audiodev coreaudio,id=snd0 -machine pcspk-audiodev=snd0 -serial stdio -append 'console=ttyS0,38400' --no-reboot -d int -kernel ${TARGET}
+	@qemu-system-i386 -s -S -audiodev coreaudio,id=snd0 -machine pcspk-audiodev=snd0 -serial stdio -append 'console=ttyS0,38400' --no-reboot -d int --hda mapleos.iso
 
 bochs: ${TARGET} iso
 	@bochs
@@ -57,10 +57,11 @@ bochs: ${TARGET} iso
 run:
 	@mkdir -p bin
 	@echo "${COLOUR_GREEN}Running MapleOS in QEMU${END_COLOUR}"
-	@qemu-system-i386 -audiodev coreaudio,id=snd0 -machine pcspk-audiodev=snd0 -serial stdio -append 'console=ttyS0,38400' --no-reboot -kernel ${TARGET}
+	# @qemu-system-i386 -audiodev coreaudio,id=snd0 -machine pcspk-audiodev=snd0 -serial stdio -append 'console=ttyS0,38400' --no-reboot -kernel ${TARGET}
+	@qemu-system-i386 -audiodev coreaudio,id=snd0 -machine pcspk-audiodev=snd0 -serial stdio --no-reboot -hda mapleos.img
 
 clean:
 	@echo "${COLOUR_BLUE}Cleaning MapleOS${END_COLOUR}"
 	@rm -rf bin
 
-all: ${TARGET} run
+all: ${TARGET} iso run
